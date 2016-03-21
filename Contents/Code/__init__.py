@@ -47,7 +47,7 @@ def ParseDirectory(id, name):
             elif f.content_type.startswith('video/'):
                 oc.add(VideoClipObject(
                     key = Callback(Lookup, id = f.id),
-                    items = [ MediaObject(parts = [ PartObject(key = Callback(PlayMedia, url = f.stream_url)) ]) ],
+                    items = [ MediaObject(parts = [ PartObject(key = Callback(PlayMedia, id = f.id)) ]) ],
                     rating_key = f.id,
                     title = f.name,
                     thumb = f.screenshot))
@@ -55,7 +55,7 @@ def ParseDirectory(id, name):
             elif f.content_type.startswith('audio/'):
                 oc.add(TrackObject(
                     key = Callback(Lookup, id = f.id),
-                    items = [ MediaObject(parts = [ PartObject(key = Callback(PlayMedia, url = f.stream_url)) ]) ],
+                    items = [ MediaObject(parts = [ PartObject(key = Callback(PlayMedia, id = f.id)) ]) ],
                     rating_key = f.id,
                     title = f.name,
                     thumb = f.screenshot))
@@ -79,7 +79,7 @@ def Lookup(id):
     if f.content_type.startswith('video/'):
         oc.add(VideoClipObject(
             key = Callback(Lookup, id = f.id),
-            items = [ MediaObject(parts = [ PartObject(key = Callback(PlayMedia, url = f.stream_url)) ]) ],
+            items = [ MediaObject(parts = [ PartObject(key = Callback(PlayMedia, id = f.id)) ]) ],
             rating_key = f.id,
             title = f.name,
             thumb = f.screenshot))
@@ -87,7 +87,7 @@ def Lookup(id):
     elif f.content_type.startswith('audio/'):
         oc.add(TrackObject(
             key = Callback(Lookup, id = f.id),
-            items = [ MediaObject(parts = [ PartObject(key = Callback(PlayMedia, url = f.stream_url)) ]) ],
+            items = [ MediaObject(parts = [ PartObject(key = Callback(PlayMedia, id = f.id)) ]) ],
             rating_key = f.id,
             title = f.name,
             thumb = f.screenshot))
@@ -99,5 +99,10 @@ def Lookup(id):
 
 
 @route('/video/putio/play')
-def PlayMedia(url):
-    return Redirect(url)
+def PlayMedia(id):
+    id = int(id)
+
+    client = putio2.Client(Prefs['access_token'])
+    f = client.File.get(id)
+
+    return Redirect(f.stream_url)
