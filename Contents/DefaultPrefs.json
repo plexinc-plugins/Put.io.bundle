@@ -2,7 +2,7 @@
     {
         "id": "access_token",
         "type": "text",
-        "label":  "Access Token (Get it from https://app.put.io/oauth/apps )",
+        "label":  "Access Token (Get it from <a target='_blank' href='https://app.put.io/oauth/apps'>here</a>.)",
         "default":  ""
     }
 ]
