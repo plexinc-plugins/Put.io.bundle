@@ -18,12 +18,12 @@ def Start():
 
 
 @handler('/video/putio', NAME, art=ART, thumb=ICON)
-def MainMenu():
+def MainMenu(**kwargs):
     return ParseDirectory(0, NAME)
 
 
 @route('/video/putio/directory/{id}')
-def ParseDirectory(id, name):
+def ParseDirectory(id, name, **kwargs):
     oc = ObjectContainer(title1=name, view_group='InfoList')
 
     oc.add(PrefsObject(title=L('Preferences')))
@@ -67,7 +67,7 @@ def ParseDirectory(id, name):
 
 
 @route('/video/putio/lookup')
-def Lookup(id):
+def Lookup(id, **kwargs):
     oc = ObjectContainer()
     id = int(id)
 
@@ -97,7 +97,7 @@ def Lookup(id):
 
 
 @route('/video/putio/play')
-def PlayMedia(id):
+def PlayMedia(id, **kwargs):
     id = int(id)
 
     client = putio2.Client(Prefs['access_token'])
